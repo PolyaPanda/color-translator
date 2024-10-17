@@ -93,7 +93,7 @@ function hslToHex(h, s, l) {
   l /= 100;
   let r, g, b;
   if (s === 0) {
-    r = g = b = l; // achromatic
+    r = g = b = l; 
   } else {
     const hue2rgb = (p, q, t) => {
       if (t < 0) t += 1;
@@ -275,18 +275,18 @@ b_range.addEventListener('input', function () {
 
 r.addEventListener('input', function () {
 	let value = parseInt(r.value);
-	if (value <= 0) {
+	if (value < 0) {
 			r.value = 0;
 	} else if (value > 255) {
 			r.value = 255;
-	} 
+	}
 	r_range.value = r.value;
 	handleRgbChange();
 });
 
 g.addEventListener('input', function () {
 	let value = parseInt(g.value);
-	if (value <= 0) {
+	if (value < 0) {
 			g.value = 0;
 	} else if (value > 255) {
 			g.value = 255;
@@ -297,7 +297,7 @@ g.addEventListener('input', function () {
 
 b.addEventListener('input', function () {
 	let value = parseInt(b.value);
-	if (value <= 0) {
+	if (value < 0) {
 			bt.value = 0;
 	} else if (value > 255) {
 			b.value = 255;
@@ -369,6 +369,35 @@ k.addEventListener('input', function () {
 	}
 	k_range.value = k.value;
 	handleCMYKChange();
+});
+function setDefaultValue(input, rangeInput) {
+    if (input.value.trim() === '') {
+        input.value = '0';
+        rangeInput.value = '0';  
+    }
+}
+
+const inputsAndRanges = [
+    { input: r, range: r_range },
+    { input: g, range: g_range },
+    { input: b, range: b_range },
+    { input: c, range: c_range },
+    { input: m, range: m_range },
+    { input: y, range: y_range },
+    { input: k, range: k_range },
+    { input: h, range: h_range },
+    { input: s, range: s_range },
+    { input: l, range: l_range },
+];
+
+inputsAndRanges.forEach(({ input, range }) => {
+    input.addEventListener('blur', () => setDefaultValue(input, range));
+});
+
+document.addEventListener("DOMContentLoaded", (event) => {
+    inputsAndRanges.forEach(({ input, range }) => {
+        setDefaultValue(input, range);
+    });
 });
 
 h_range.addEventListener('input', function () {
